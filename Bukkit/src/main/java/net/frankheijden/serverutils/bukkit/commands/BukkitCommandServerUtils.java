@@ -28,7 +28,8 @@ import net.frankheijden.serverutils.common.utils.KeyValueComponentBuilder;
 import net.frankheijden.serverutils.common.utils.ForwardFilter;
 import net.frankheijden.serverutils.common.utils.ListComponentBuilder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginIdentifiableCommand;
@@ -126,7 +127,7 @@ public class BukkitCommandServerUtils extends CommandServerUtils<BukkitPlugin, P
         if (handler == null) {
             messages.get(BukkitMessageKey.RELOADCONFIG_NOT_EXISTS).sendTo(
                     sender,
-                    Template.of("config", config)
+                    TagResolver.resolver(Placeholder.parsed("config", config))
             );
             return;
         }
@@ -138,7 +139,7 @@ public class BukkitCommandServerUtils extends CommandServerUtils<BukkitPlugin, P
             if (MinecraftReflectionVersion.MINOR > max) {
                 messages.get(BukkitMessageKey.RELOADCONFIG_NOT_SUPPORTED).sendTo(
                         sender,
-                        Template.of("config", config)
+                        TagResolver.resolver(Placeholder.parsed("config", config))
                 );
                 return;
             }
@@ -153,7 +154,7 @@ public class BukkitCommandServerUtils extends CommandServerUtils<BukkitPlugin, P
             BukkitMessageKey key = filter.hasWarnings()
                     ? BukkitMessageKey.RELOADCONFIG_WARNINGS
                     : BukkitMessageKey.RELOADCONFIG_SUCCESS;
-            plugin.getMessagesResource().get(key).sendTo(sender, Template.of("config", config));
+            plugin.getMessagesResource().get(key).sendTo(sender, TagResolver.resolver(Placeholder.parsed("config", config)));
         } catch (Exception ex) {
             filter.stop(Bukkit.getLogger());
 

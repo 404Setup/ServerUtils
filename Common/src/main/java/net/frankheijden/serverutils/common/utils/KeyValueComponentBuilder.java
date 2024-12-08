@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import net.frankheijden.serverutils.common.config.MessagesResource;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 public class KeyValueComponentBuilder {
 
     private final MessagesResource.Message format;
-    private final List<Template[]> templatesList;
+    private final List<TagResolver[]> templatesList;
     private final String keyPlaceholder;
     private final String valuePlaceholder;
 
@@ -43,8 +44,8 @@ public class KeyValueComponentBuilder {
         return new KeyValuePair(key);
     }
 
-    private KeyValueComponentBuilder add(Template key, Template value) {
-        this.templatesList.add(new Template[]{ key, value });
+    private KeyValueComponentBuilder add(TagResolver key, TagResolver value) {
+        this.templatesList.add(new TagResolver[]{ key, value });
         return this;
     }
 
@@ -54,7 +55,7 @@ public class KeyValueComponentBuilder {
     public List<Component> build() {
         List<Component> components = new ArrayList<>(templatesList.size());
 
-        for (Template[] templates : templatesList) {
+        for (TagResolver[] templates : templatesList) {
             components.add(format.toComponent(templates));
         }
 
@@ -63,24 +64,24 @@ public class KeyValueComponentBuilder {
 
     public class KeyValuePair {
 
-        private final Template key;
+        private final TagResolver key;
 
         private KeyValuePair(String key) {
-            this.key = Template.of(keyPlaceholder, key);
+            this.key = TagResolver.resolver(Placeholder.parsed(keyPlaceholder, key));
         }
 
         private KeyValuePair(Component key) {
-            this.key = Template.of(keyPlaceholder, key);
+            this.key = TagResolver.resolver(Placeholder.component(keyPlaceholder, key));
         }
 
         public KeyValueComponentBuilder value(String value) {
             if (value == null) return KeyValueComponentBuilder.this;
-            return add(key, Template.of(valuePlaceholder, value));
+            return add(key, TagResolver.resolver(Placeholder.parsed(valuePlaceholder, value)));
         }
 
         public KeyValueComponentBuilder value(Component value) {
             if (value == null) return KeyValueComponentBuilder.this;
-            return add(key, Template.of(valuePlaceholder, value));
+            return add(key, TagResolver.resolver(Placeholder.component(valuePlaceholder, value)));
         }
     }
 }

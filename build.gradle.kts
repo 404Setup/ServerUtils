@@ -38,7 +38,7 @@ subprojects {
         implementation("cloud.commandframework:cloud-core:${VersionConstants.cloudVersion}")
         implementation("cloud.commandframework:cloud-brigadier:${VersionConstants.cloudVersion}")
         implementation("com.github.FrankHeijden:MinecraftReflection:1.0.0")
-        implementation("com.google.code.gson:gson:2.8.6")
+        implementation("com.google.code.gson:gson:2.11.0")
         implementation("me.lucko:commodore:2.2")
         compileOnly("com.mojang:brigadier:1.0.18")
 
@@ -87,11 +87,11 @@ subprojects {
         relocate("cloud.commandframework", "${dependencyDir}.cloud")
         relocate("me.lucko.commodore", "${dependencyDir}.commodore")
         relocate("io.leangen.geantyref", "${dependencyDir}.typetoken")
-        if (project.name != "Velocity") {
+        /*if (project.name != "Velocity") {
             relocate("net.kyori.adventure", "${dependencyDir}.adventure")
             relocate("net.kyori.examination", "${dependencyDir}.examination")
         }
-        relocate("net.kyori.adventure.text.minimessage", "${dependencyDir}.adventure.text.minimessage")
+        relocate("net.kyori.adventure.text.minimessage", "${dependencyDir}.adventure.text.minimessage")*/
         relocate("dev.frankheijden.minecraftreflection", "${dependencyDir}.minecraftreflection")
     }
 

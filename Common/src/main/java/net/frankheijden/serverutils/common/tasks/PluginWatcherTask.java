@@ -28,7 +28,8 @@ import net.frankheijden.serverutils.common.entities.results.PluginResults;
 import net.frankheijden.serverutils.common.entities.results.WatchResult;
 import net.frankheijden.serverutils.common.managers.AbstractPluginManager;
 import net.frankheijden.serverutils.common.utils.FileUtils;
-import net.kyori.adventure.text.minimessage.Template;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 public class PluginWatcherTask<P, T> extends AbstractTask {
 
@@ -116,7 +117,7 @@ public class PluginWatcherTask<P, T> extends AbstractTask {
                 ServerUtilsPluginDescription description = descriptionOptional.get();
                 WatchEntry foundEntry = pluginIdToWatchEntryMap.remove(description.getId());
                 if (foundEntry != null) {
-                    send(WatchResult.DELETED_FILE_IS_CREATED, Template.of("plugin", foundEntry.pluginId));
+                    send(WatchResult.DELETED_FILE_IS_CREATED, TagResolver.resolver(Placeholder.parsed("plugin", foundEntry.pluginId)));
                     fileNameToWatchEntryMap.put(fileName, foundEntry);
 
                     if (pluginIdToWatchEntryMap.isEmpty()) {
@@ -139,7 +140,7 @@ public class PluginWatcherTask<P, T> extends AbstractTask {
         AbstractPluginManager<P, ?> pluginManager = plugin.getPluginManager();
         Optional<File> fileOptional = pluginManager.getPluginFile(entry.pluginId);
         if (!fileOptional.isPresent()) {
-            send(WatchResult.FILE_DELETED, Template.of("plugin", entry.pluginId));
+            send(WatchResult.FILE_DELETED, TagResolver.resolver(Placeholder.parsed("plugin", entry.pluginId)));
 
             fileNameToWatchEntryMap.remove(fileName);
             pluginIdToWatchEntryMap.put(entry.pluginId, entry);
@@ -183,7 +184,7 @@ public class PluginWatcherTask<P, T> extends AbstractTask {
         }, 10L);
     }
 
-    private void send(WatchResult result, Template... templates) {
+    private void send(WatchResult result, TagResolver... templates) {
         result.sendTo(sender, templates);
         if (sender.isPlayer()) {
             result.sendTo(plugin.getChatProvider().getConsoleServerAudience(), templates);
