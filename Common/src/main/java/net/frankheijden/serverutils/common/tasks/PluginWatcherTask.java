@@ -117,7 +117,8 @@ public class PluginWatcherTask<P, T> extends AbstractTask {
                 ServerUtilsPluginDescription description = descriptionOptional.get();
                 WatchEntry foundEntry = pluginIdToWatchEntryMap.remove(description.getId());
                 if (foundEntry != null) {
-                    send(WatchResult.DELETED_FILE_IS_CREATED, TagResolver.resolver(Placeholder.parsed("plugin", foundEntry.pluginId)));
+                    send(WatchResult.DELETED_FILE_IS_CREATED,
+                            TagResolver.resolver(Placeholder.parsed("plugin", foundEntry.pluginId)));
                     fileNameToWatchEntryMap.put(fileName, foundEntry);
 
                     if (pluginIdToWatchEntryMap.isEmpty()) {

@@ -114,8 +114,12 @@ public abstract class CommandServerUtils<U extends ServerUtilsPlugin<P, ?, C, ?,
 
             if (commandElement.shouldDisplayInHelp()) {
                 sender.sendMessage(helpFormatMessage.toComponent(
-                        TagResolver.resolver(Placeholder.parsed("command", shortestCommandAlias)),
-                        TagResolver.resolver(Placeholder.parsed("help", commandElement.getDescription().getDescription()))
+                        TagResolver.resolver(
+                                Placeholder.parsed("command", shortestCommandAlias)
+                        ),
+                        TagResolver.resolver(
+                                Placeholder.parsed("help", commandElement.getDescription().getDescription())
+                        )
                 ));
             }
 
@@ -129,8 +133,10 @@ public abstract class CommandServerUtils<U extends ServerUtilsPlugin<P, ?, C, ?,
                     if (subcommandElement.shouldDisplayInHelp()) {
                         String shortestSubcommandAlias = determineShortestAlias(subcommandElement);
                         sender.sendMessage(helpFormatMessage.toComponent(
-                                TagResolver.resolver(Placeholder.parsed("command", shortestCommandAlias + ' ' + shortestSubcommandAlias)),
-                                TagResolver.resolver(Placeholder.parsed("help", subcommandElement.getDescription().getDescription()))
+                                TagResolver.resolver(Placeholder.parsed("command",
+                                                shortestCommandAlias + ' ' + shortestSubcommandAlias)),
+                                TagResolver.resolver(Placeholder.parsed("help",
+                                                subcommandElement.getDescription().getDescription()))
                         ));
                     }
                 }
@@ -147,8 +153,10 @@ public abstract class CommandServerUtils<U extends ServerUtilsPlugin<P, ?, C, ?,
                         String shortestFlagAlias = determineShortestAlias(flagElement);
                         String flagPrefix = "-" + (flagElement.getMain().equals(shortestFlagAlias) ? "_" : "");
                         sender.sendMessage(helpFormatMessage.toComponent(
-                                TagResolver.resolver(Placeholder.parsed("command", shortestCommandAlias + ' ' + flagPrefix + shortestFlagAlias)),
-                                TagResolver.resolver(Placeholder.parsed("help", flagElement.getDescription().getDescription()))
+                                TagResolver.resolver(Placeholder.parsed("command",
+                                        shortestCommandAlias + ' ' + flagPrefix + shortestFlagAlias)),
+                                TagResolver.resolver(Placeholder.parsed("help",
+                                        flagElement.getDescription().getDescription()))
                         ));
                     }
                 }
@@ -294,7 +302,8 @@ public abstract class CommandServerUtils<U extends ServerUtilsPlugin<P, ?, C, ?,
                         .min(Comparator.comparingInt(String::length))
                         .orElse("restart");
                 Component component = plugin.getMessagesResource().get(MessageKey.RELOADPLUGIN_SERVERUTILS).toComponent(
-                        TagResolver.resolver(Placeholder.parsed("command", context.getRawInput().peekFirst() + " " + restartCommand))
+                        TagResolver.resolver(Placeholder.parsed("command",
+                                context.getRawInput().peekFirst() + " " + restartCommand))
                 );
                 sender.sendMessage(component);
                 return true;
@@ -389,7 +398,8 @@ public abstract class CommandServerUtils<U extends ServerUtilsPlugin<P, ?, C, ?,
                 KeyValueComponentBuilder.create(formatMessage, "key", "value"),
                 listBuilderConsumer -> {
                     ListComponentBuilder<String> listBuilder = ListComponentBuilder.<String>create()
-                            .format(str -> listFormatMessage.toComponent(TagResolver.resolver(Placeholder.parsed("value", str))))
+                            .format(str -> listFormatMessage.toComponent(
+                                    TagResolver.resolver(Placeholder.parsed("value", str))))
                             .separator(separator)
                             .lastSeparator(lastSeparator)
                             .emptyValue(null);

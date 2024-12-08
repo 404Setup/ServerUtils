@@ -154,7 +154,8 @@ public class BukkitCommandServerUtils extends CommandServerUtils<BukkitPlugin, P
             BukkitMessageKey key = filter.hasWarnings()
                     ? BukkitMessageKey.RELOADCONFIG_WARNINGS
                     : BukkitMessageKey.RELOADCONFIG_SUCCESS;
-            plugin.getMessagesResource().get(key).sendTo(sender, TagResolver.resolver(Placeholder.parsed("config", config)));
+            plugin.getMessagesResource().get(key).sendTo(sender,
+                    TagResolver.resolver(Placeholder.parsed("config", config)));
         } catch (Exception ex) {
             filter.stop(Bukkit.getLogger());
 
